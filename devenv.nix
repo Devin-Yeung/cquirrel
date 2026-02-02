@@ -6,10 +6,14 @@
   ...
 }:
 
+let
+  tpch-dbgen = pkgs.callPackage ./nix/pkgs/tpch.nix { };
+in
 {
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git
+    tpch-dbgen
   ];
 
   # https://devenv.sh/languages/
@@ -26,12 +30,12 @@
 
   # https://devenv.sh/basics/
   enterShell = ''
-    git --version # Use packages
+    dbgen -h
   '';
 
   # https://devenv.sh/tests/
   enterTest = ''
-    git --version | grep --color=auto "${pkgs.git.version}"
+    dbgen -h | grep --color=auto "${tpch-dbgen.version}"
   '';
 
   # https://devenv.sh/git-hooks/
