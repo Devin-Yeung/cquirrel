@@ -30,12 +30,12 @@ in
 
   # https://devenv.sh/basics/
   enterShell = ''
-    dbgen -h
+    dbgen -h 2>&1 | grep --color=auto "${tpch-dbgen.version}"
   '';
 
   # https://devenv.sh/tests/
   enterTest = ''
-    dbgen -h | grep --color=auto "${tpch-dbgen.version}"
+    dbgen -h 2>&1 | grep --color=auto "${tpch-dbgen.version}"
   '';
 
   # https://devenv.sh/git-hooks/
