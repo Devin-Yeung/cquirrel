@@ -8,7 +8,9 @@
 
 {
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = with pkgs; [
+    git
+  ];
 
   # https://devenv.sh/languages/
   languages = {
@@ -36,6 +38,14 @@
   git-hooks = {
     hooks = {
       nixfmt.enable = true;
+      # tidy up Maven POM files before committing
+      mvn-tidy = {
+        enable = true;
+        name = "Tidy Maven POM files";
+        entry = "mvn tidy:pom";
+        files = "pom\\.xml$";
+        pass_filenames = false;
+      };
     };
     package = pkgs.prek;
   };
