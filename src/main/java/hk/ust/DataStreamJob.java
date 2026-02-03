@@ -18,7 +18,10 @@
 
 package hk.ust;
 
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.apache.flink.table.api.EnvironmentSettings;
+import org.apache.flink.table.api.TableEnvironment;
 
 /**
  * Skeleton for a Flink DataStream Job.
@@ -35,31 +38,22 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class DataStreamJob {
 
 	public static void main(String[] args) throws Exception {
-		// Sets up the execution environment, which is the main entry point
-		// to building Flink applications.
-		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-		/*
-		 * Here, you can start creating your execution plan for Flink.
-		 *
-		 * Start with getting some data from the environment, like
-		 * 	env.fromSequence(1, 10);
-		 *
-		 * then, transform the resulting DataStream<Long> using operations
-		 * like
-		 * 	.filter()
-		 * 	.flatMap()
-		 * 	.window()
-		 * 	.process()
-		 *
-		 * and many more.
-		 * Have a look at the programming guide:
-		 *
-		 * https://nightlies.apache.org/flink/flink-docs-stable/
-		 *
-		 */
+		EnvironmentSettings settings = EnvironmentSettings.newInstance()
+				.inBatchMode()
+				.build();
 
-		// Execute program, beginning computation.
-		env.execute("Flink Java API Skeleton");
+		TableEnvironment tableEnv= TableEnvironment.create(settings);
+
+		String tpchDataDir = System.getenv("TPCH_DATA_DIR");
+		if (tpchDataDir == null || tpchDataDir.trim().isEmpty()) {
+			throw new IllegalStateException("TPCH_DATA_DIR is not set");
+		}
+
+		Path lineitemPath = Paths.get(tpchDataDir, "lineitem.tbl");
+		TpchTableDefinitions.createLineitemTable(tableEnv, lineitemPath.toUri().toString());
+
+		// Just to verify that the table is created successfully
+		System.out.printf("Tables in the catalog: %s\n", String.join(", ", tableEnv.listTables()));
 	}
 }
