@@ -10,6 +10,7 @@ let
   tpch-dbgen = pkgs.callPackage ./nix/pkgs/tpch.nix { };
 in
 {
+  env.TPCH_DATA_DIR = "${config.devenv.root}/tpch_data";
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git
