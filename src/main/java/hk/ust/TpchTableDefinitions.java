@@ -5,10 +5,16 @@ import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.TableEnvironment;
 import static org.apache.flink.table.api.DataTypes.*;
+import java.nio.file.Path;
 
 public class TpchTableDefinitions {
+    private final Path dataDir;
 
-    public static void createLineitemTable(TableEnvironment tableEnv, String path) {
+    public TpchTableDefinitions(Path dataDir) {
+        this.dataDir = dataDir;
+    }
+
+    public void createLineitemTable(TableEnvironment tableEnv) {
         Schema schema = Schema.newBuilder()
                 .column("l_orderkey", BIGINT())
                 .column("l_partkey", BIGINT())
@@ -30,7 +36,7 @@ public class TpchTableDefinitions {
 
         TableDescriptor descriptor = TableDescriptor.forConnector("filesystem")
                 .schema(schema)
-                .option("path", path)
+                .option("path", dataDir.resolve("lineitem.tbl").toString())
                 .format(FormatDescriptor.forFormat("csv")
                         .option("field-delimiter", "|")
                         .option("ignore-parse-errors", "true")

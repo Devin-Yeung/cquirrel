@@ -50,8 +50,9 @@ public class DataStreamJob {
 			throw new IllegalStateException("TPCH_DATA_DIR is not set");
 		}
 
-		Path lineitemPath = Paths.get(tpchDataDir, "lineitem.tbl");
-		TpchTableDefinitions.createLineitemTable(tableEnv, lineitemPath.toUri().toString());
+		Path tpchDataPath = Paths.get(tpchDataDir);
+		TpchTableDefinitions tpchTables = new TpchTableDefinitions(tpchDataPath);
+		tpchTables.createLineitemTable(tableEnv);
 
 		// Just to verify that the table is created successfully
 		System.out.printf("Tables in the catalog: %s\n", String.join(", ", tableEnv.listTables()));
