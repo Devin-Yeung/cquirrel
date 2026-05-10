@@ -11,11 +11,19 @@ let
 in
 {
   env.TPCH_DATA_DIR = "${config.devenv.root}/tpch_data";
+  env.DUCKDB_RC = "${config.devenv.root}/.duckdbrc";
+
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git
     tpch-dbgen
   ];
+
+  scripts = {
+    duckdb.exec = ''
+      ${lib.getExe pkgs.duckdb} -init "$DUCKDB_RC" "$@"
+    '';
+  };
 
   # https://devenv.sh/languages/
   languages = {
