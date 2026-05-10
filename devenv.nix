@@ -52,7 +52,6 @@ in
         pass_filenames = false;
       };
     };
-    package = pkgs.prek;
   };
 
   # See full reference at https://devenv.sh/reference/options/

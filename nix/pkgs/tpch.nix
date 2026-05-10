@@ -3,7 +3,7 @@
   stdenv,
   fetchFromGitHub,
   makeWrapper,
-  gcc,
+  gcc14,
 }:
 
 stdenv.mkDerivation {
@@ -18,7 +18,7 @@ stdenv.mkDerivation {
   };
 
   nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [ gcc ];
+  buildInputs = [ gcc14 ];
 
   buildPhase = ''
     cd dbgen
