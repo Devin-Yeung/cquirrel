@@ -31,6 +31,9 @@ in
       enable = true;
       jdk.package = pkgs.jdk21;
       maven.enable = true;
+      lsp = {
+        enable = true;
+      };
     };
     nix = {
       enable = true;
