@@ -3,7 +3,7 @@
   stdenv,
   fetchFromGitHub,
   makeWrapper,
-  gcc14,
+  clang,
 }:
 
 stdenv.mkDerivation {
@@ -18,11 +18,13 @@ stdenv.mkDerivation {
   };
 
   nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [ gcc14 ];
+  buildInputs = [ clang ];
 
   buildPhase = ''
     cd dbgen
-    make MACHINE=${if stdenv.hostPlatform.isDarwin then "MACOS" else "LINUX"} DATABASE=POSTGRESQL
+    make MACHINE=${
+      if stdenv.hostPlatform.isDarwin then "MACOS" else "LINUX"
+    } DATABASE=POSTGRESQL CC=clang
   '';
 
   installPhase = ''
