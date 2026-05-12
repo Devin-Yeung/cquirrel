@@ -59,3 +59,6 @@ buildNumber.properties
 
 # tpch data
 tpch_data
+
+# macOS
+.DS_Store
